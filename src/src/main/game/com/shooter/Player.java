@@ -5,9 +5,9 @@ import javafx.scene.image.Image;
 
 
 public class Player extends Character {
-    double mouseposx;
-    double mouseposy;
-    Label scorelabel = new Label("Score: "+score);
+    private double mouseposx;
+    private double mouseposy;
+    private Label scorelabel = new Label("Score: "+score);
     Player(){
         characterModel.setImage(new Image("Player.png", 100,125,true,true));
 

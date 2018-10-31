@@ -1,7 +1,7 @@
 package main.game.com.shooter;
 
-public class Pistol extends Gun {
-    public Pistol(){
-        super(100, 2, "Pistol");
+class Pistol extends Gun {
+    Pistol(){
+        super(100, 2, "Pistol", 5);
     }
 }

@@ -6,39 +6,29 @@ import javafx.scene.layout.Pane;
 
 import java.util.Iterator;
 
-public class Gun extends Group{
-    private String name = "gun";
-    private int damage = 2;
+class Gun extends Group{
+    private String name;
+    private int damage;
     private int ammunition;
-    public Gun(){
-        ammunition = 10;
-    }
+    private int speed;
 
-    public Gun(int ammunition){
-        this.ammunition = ammunition;
-    }
-
-    public Gun(int ammunition, String name) {
-        this.name = name;
-        this.ammunition = ammunition;
-    }
-
-    public Gun(int ammunition, int damage, String name) {
+    Gun(int ammunition, int damage, String name, int speed) {
         this.damage = damage;
         this.name = name;
         this.ammunition = ammunition;
+        this.speed = speed;
     }
 
-    public void shoot(double startposx, double startposy, double mouseposx, double mouseposy){
+    void shoot(double startposx, double startposy, double mouseposx, double mouseposy){
         if(ammunition==0){
             return;
         }
-        Bullet bullet = new Bullet(mouseposx, mouseposy,startposx,startposy);
+        Bullet bullet = new Bullet(mouseposx, mouseposy,startposx,startposy,speed);
         this.getChildren().add(bullet);
         ammunition--;
     }
 
-    public void update(){
+    void update(){
         Iterator iter= this.getChildren().iterator();
         Character gunuser = (Character)getParent().getParent();
         Pane level = (Pane)this.getScene().getRoot();
@@ -53,9 +43,9 @@ public class Gun extends Group{
             for(Node characternode:characters.getChildren()){
                 Character character = (Character)characternode;
                 if(character!=gunuser){
-                    if(character.characterModel.intersects(bullet.getX(),bullet.getY(),bullet.getImage().getWidth(),bullet.getImage().getHeight())){
-                        if(character.health.takeDamage(damage)){
-                            character.dead=true;
+                    if (bullet != null && character.characterModel.intersects(bullet.getX(), bullet.getY(), bullet.getImage().getWidth(), bullet.getImage().getHeight())) {
+                        if (character.health.takeDamage(damage)) {
+                            character.dead = true;
                             gunuser.score = character.scorevalue;
                             iter.remove();
                             break;
@@ -66,12 +56,13 @@ public class Gun extends Group{
                 }
             }
 
-            bullet.update();
+            if (bullet != null) {
+                bullet.update();
+            }
         }
     }
 
     public String getName() {
         return name;
     }
-
 }

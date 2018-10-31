@@ -12,8 +12,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.Iterator;
-
 public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
@@ -72,12 +70,7 @@ public class Main extends Application {
                     character.update();
                 }
                 // removes dead characters
-                Iterator iter= characters.getChildren().iterator();
-                while(iter.hasNext()){
-                    if(((Character)iter.next()).dead){
-                        iter.remove();
-                    }
-                }
+                characters.getChildren().removeIf(o -> ((Character) o).dead);
             }
         };
 

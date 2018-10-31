@@ -4,17 +4,11 @@ package main.game.com.shooter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Bullet extends ImageView {
-    double xtoymovement;
-    int speed = 5;
-    double xspeed = 0;
-    double yspeed = 0;
+class Bullet extends ImageView {
+    private double xspeed;
+    private double yspeed;
 
-    public Bullet() {
-        this.setImage(new Image("Bullet.png", 25,25,true,true));
-    }
-
-    public Bullet(double targetx, double targety, double startposx, double startposy) {
+    Bullet(double targetx, double targety, double startposx, double startposy, int speed) {
         double hypothenus = Math.sqrt((targetx-startposx)*(targetx-startposx) + (targety-startposy) * (targety-startposy));
         double steps = hypothenus/speed;
         xspeed = (targetx-startposx)/steps;
@@ -28,7 +22,7 @@ public class Bullet extends ImageView {
         setY(getY()+yspeed*62.5/speed);
     }
 
-    public void update(){
+    void update(){
         move();
     }
 
