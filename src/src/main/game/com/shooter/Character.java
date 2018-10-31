@@ -13,15 +13,15 @@ public class Character extends Group {
     boolean running, goNorth, goSouth, goEast, goWest;
     Group guns = new Group();
     Gun selectedWeapon;
-    boolean dead = false;
     int score = 0;
-    private String name;
+    String name;
 
 
     Character(){
         this.getChildren().add(characterModel);
         this.getChildren().add(health);
         name = "Character";
+        toFront();
     }
 
     public void update(){

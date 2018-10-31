@@ -11,24 +11,31 @@ class Gun extends Group{
     private int damage;
     private int ammunition;
     private int speed;
+    private int cooldownbetweenshots;
+    private int cooldown;
 
-    Gun(int ammunition, int damage, String name, int speed) {
+    Gun(int ammunition, int damage, String name, int speed, int cooldownbetweenshots) {
         this.damage = damage;
         this.name = name;
         this.ammunition = ammunition;
         this.speed = speed;
+        this.cooldownbetweenshots = cooldownbetweenshots;
     }
 
     void shoot(double startposx, double startposy, double mouseposx, double mouseposy){
-        if(ammunition==0){
+        if(ammunition==0 || cooldown>0){
             return;
         }
         Bullet bullet = new Bullet(mouseposx, mouseposy,startposx,startposy,speed);
         this.getChildren().add(bullet);
+        cooldown = cooldownbetweenshots;
         ammunition--;
     }
 
     void update(){
+        if(cooldown>0){
+            cooldown--;
+        }
         Iterator iter= this.getChildren().iterator();
         Character gunuser = (Character)getParent().getParent();
         Pane level = (Pane)this.getScene().getRoot();
@@ -45,8 +52,7 @@ class Gun extends Group{
                 if(character!=gunuser){
                     if (bullet != null && character.characterModel.intersects(bullet.getX(), bullet.getY(), bullet.getImage().getWidth(), bullet.getImage().getHeight())) {
                         if (character.health.takeDamage(damage)) {
-                            character.dead = true;
-                            gunuser.score = character.scorevalue;
+                            gunuser.score += character.scorevalue;
                             iter.remove();
                             break;
                         }

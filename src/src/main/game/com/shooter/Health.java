@@ -11,6 +11,7 @@ public class Health extends Group {
     private int currentlife;
     private ImageView healthBar = new ImageView(new Image("health.png"));
     private ImageView healthBarOverlay = new ImageView(new Image("bar.png"));
+    private boolean dead = false;
 
     Health(int maxlife){
         getChildren().addAll(healthBar,healthBarOverlay);
@@ -18,8 +19,9 @@ public class Health extends Group {
         this.currentlife = this.maxlife;
     }
 
-    boolean takeDamage(int amount){
-        if(this.currentlife-amount<=0){
+    boolean takeDamage(int amount) {
+        if (this.currentlife - amount <= 0){
+            dead = true;
             return true;
         }
         this.currentlife = this.currentlife- amount;
@@ -41,5 +43,9 @@ public class Health extends Group {
 
     public int getCurrentlife() {
         return currentlife;
+    }
+
+    public boolean isDead() {
+        return dead;
     }
 }

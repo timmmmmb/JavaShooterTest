@@ -8,9 +8,10 @@ public class Player extends Character {
     private double mouseposx;
     private double mouseposy;
     private Label scorelabel = new Label("Score: "+score);
-    Player(){
+    Player(int x, int y){
         characterModel.setImage(new Image("Player.png", 100,125,true,true));
-
+        characterModel.setX(x);
+        characterModel.setY(y);
         this.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP: case W:    goNorth = true; break;
@@ -37,23 +38,16 @@ public class Player extends Character {
             }
             mouseposx = event.getX();
             mouseposy = event.getY();
-            double dx = event.getX() - getCharacterCenterX();
-            double dy = event.getY() - getCharacterCenterY();
-            Double angle = Math.atan2(dy, dx);
-            double rotate = angle * ( 180 / Math.PI )-90;
-            characterModel.setRotate(rotate);
-
+            rotateTowardsMouse();
         });
 
-        guns.getChildren().add(new Pistol());
+        guns.getChildren().add(new Pistol(1000));
         this.getChildren().add(guns);
         selectedWeapon = (Gun)guns.getChildren().get(0);
 
-        this.setOnMouseClicked(event -> {
-            selectedWeapon.shoot(this.getCharacterCenterX(), this.getCharacterCenterY(), mouseposx, mouseposy);
-            toFront();
-        });
+        this.setOnMousePressed(event -> selectedWeapon.shoot(this.getCharacterCenterX(), this.getCharacterCenterY(), mouseposx, mouseposy));
         this.getChildren().add(scorelabel);
+        this.name = "Player";
     }
 
     @Override
@@ -63,6 +57,14 @@ public class Player extends Character {
         moveHealth();
         updateScore();
 
+    }
+
+    private void rotateTowardsMouse(){
+        double dx = mouseposx - getCharacterCenterX();
+        double dy = mouseposy - getCharacterCenterY();
+        Double angle = Math.atan2(dy, dx);
+        double rotate = angle * ( 180 / Math.PI )-90;
+        characterModel.setRotate(rotate);
     }
 
     private void updateScore() {
@@ -80,5 +82,8 @@ public class Player extends Character {
 
         characterModel.setX(characterModel.getX()+dx);
         characterModel.setY(characterModel.getY()+dy);
+        if(dx!=0||dy!=0){
+            rotateTowardsMouse();
+        }
     }
 }
