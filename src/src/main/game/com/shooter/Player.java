@@ -1,13 +1,15 @@
 package main.game.com.shooter;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 
 public class Player extends Character {
     double mouseposx;
     double mouseposy;
     Player(){
-        this.setImage(new Image("Player.png", 100,125,true,true));
+        characterModel.setImage(new Image("Player.png", 100,125,true,true));
+
         this.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case UP: case W:    goNorth = true; break;
@@ -29,38 +31,34 @@ public class Player extends Character {
         });
 
         this.setOnMouseMoved(event -> {
-            if(getX()<=event.getX() && event.getX()<=getX()+getImage().getWidth()&&getY()<=event.getY() && event.getY()<=getY()+getImage().getHeight()){
+            if(characterModel.getX()<=event.getX() && event.getX()<=characterModel.getX()+characterModel.getImage().getWidth()&&characterModel.getY()<=event.getY() && event.getY()<=characterModel.getY()+characterModel.getImage().getHeight()){
                 return;
             }
             mouseposx = event.getX();
             mouseposy = event.getY();
-            double dx = event.getX() - playerCenterX();
-            double dy = event.getY() - playerCenterY();
+            double dx = event.getX() - getCharacterCenterX();
+            double dy = event.getY() - getCharacterCenterY();
             Double angle = Math.atan2(dy, dx);
             double rotate = angle * ( 180 / Math.PI )-90;
-            setRotate(rotate);
+            characterModel.setRotate(rotate);
 
         });
-        guns.add(new Pistol());
-        selectedWeapon = guns.get(0);
+
+        guns.getChildren().add(new Pistol());
+        this.getChildren().add(guns);
+        selectedWeapon = (Gun)guns.getChildren().get(0);
+
         this.setOnMouseClicked(event -> {
-            selectedWeapon.shoot(componenets, this.playerCenterX(), this.playerCenterY(), mouseposx, mouseposy);
+            selectedWeapon.shoot(this.getCharacterCenterX(), this.getCharacterCenterY(), mouseposx, mouseposy);
             toFront();
         });
-    }
-
-    private double playerCenterX(){
-        return getX()+getImage().getWidth()/2;
-    }
-
-    private double playerCenterY(){
-        return getY()+(getImage().getHeight()-(getImage().getHeight()/5))/2;
     }
 
     @Override
     public void update() {
         move();
         moveBullets();
+        moveHealth();
     }
 
     private void move(){
@@ -72,13 +70,7 @@ public class Player extends Character {
         if (goWest)  dx -= speed;
         if (running) { dx *= 3; dy *= 3; }
 
-        this.setX(getX()+dx);
-        this.setY(getY()+dy);
-    }
-
-    private void moveBullets(){
-        for(Gun gun: guns){
-            gun.update();
-        }
+        characterModel.setX(characterModel.getX()+dx);
+        characterModel.setY(characterModel.getY()+dy);
     }
 }

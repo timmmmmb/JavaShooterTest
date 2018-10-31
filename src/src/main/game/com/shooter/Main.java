@@ -4,14 +4,17 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Main extends Application {
     public static void main(String[] args) {
@@ -46,17 +49,24 @@ public class Main extends Application {
         Scene scene = new Scene(vBox,1000,1000);
 
         Player player = new Player();
-        player.setX(400);
-        player.setY(400);
-        Group level = new Group ();
-        ArrayList<Character> characters = new ArrayList<>();
-        characters.add(player);
-        level.getChildren().add(player.componenets);
+        player.characterModel.setX(400);
+        player.characterModel.setY(400);
+        Pane level = new Pane();
+        Group characters = new Group();
+        characters.getChildren().add(player);
+
+        Enemy enemy1 = new Enemy();
+        enemy1.characterModel.setX(100);
+        enemy1.characterModel.setY(400);
+        characters.getChildren().add(enemy1);
+        level.getChildren().add(characters);
         level.setStyle("-fx-background-color : #63ff69;");
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                for(Character character :characters){
+                Iterator iter= characters.getChildren().iterator();
+                while(iter.hasNext()) {
+                    Character character = (Character)iter.next();
                     character.update();
                 }
             }

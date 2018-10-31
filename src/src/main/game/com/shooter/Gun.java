@@ -1,13 +1,12 @@
 package main.game.com.shooter;
 
 import javafx.scene.Group;
+import java.util.Iterator;
 
-import java.util.ArrayList;
-
-public class Gun {
+public class Gun extends Group{
     private String name = "gun";
+    private int damage = 2;
     private int ammunition;
-    private ArrayList<Bullet> bullets = new ArrayList<>();
     public Gun(){
         ammunition = 10;
     }
@@ -21,31 +20,36 @@ public class Gun {
         this.ammunition = ammunition;
     }
 
-    public void shoot(Group components, double startposx, double startposy, double mouseposx, double mouseposy){
+    public Gun(int ammunition, int damage, String name) {
+        this.damage = damage;
+        this.name = name;
+        this.ammunition = ammunition;
+    }
+
+    public void shoot(double startposx, double startposy, double mouseposx, double mouseposy){
         if(ammunition==0){
             return;
         }
         Bullet bullet = new Bullet(mouseposx, mouseposy,startposx,startposy);
-        bullets.add(bullet);
-        components.getChildren().add(bullet);
+        this.getChildren().add(bullet);
         ammunition--;
     }
 
     public void update(){
-        ArrayList<Integer> toremove = new ArrayList();
-        int i = 0;
-        for(Bullet bullet: bullets){
-
-            //remove if out of game
-            if(bullet.getX()+bullet.getImage().getWidth()>bullet.getScene().getWidth()||bullet.getX()<0-bullet.getImage().getWidth()||bullet.getY()>bullet.getScene().getHeight()+bullet.getImage().getHeight()||bullet.getY()<0-bullet.getImage().getHeight()){
-                toremove.add(i);
+        Iterator iter= this.getChildren().iterator();
+        while(iter.hasNext()){
+            Bullet bullet = (Bullet)iter.next();
+            if(bullet!=null&&bullet.getImage()!=null&&bullet.getScene()!=null&&(bullet.getX()+bullet.getImage().getWidth()>bullet.getScene().getWidth()||bullet.getX()<0-bullet.getImage().getWidth()||bullet.getY()>bullet.getScene().getHeight()+bullet.getImage().getHeight()||bullet.getY()<0-bullet.getImage().getHeight())){
+                iter.remove();
+                continue;
             }
+            //test if bullet collides with something
             bullet.update();
-            i++;
-        }
-        for(int remove: toremove){
-            ((Group)bullets.get(remove).getParent()).getChildren().remove(remove);
-            bullets.remove(remove);
         }
     }
+
+    public String getName() {
+        return name;
+    }
+
 }
