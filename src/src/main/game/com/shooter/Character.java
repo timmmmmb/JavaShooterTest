@@ -7,11 +7,14 @@ import javafx.scene.image.ImageView;
 
 public class Character extends Group {
     public ImageView characterModel = new ImageView(new Image("Enemy.png"));
+    public int scorevalue = 1;
     Health health = new Health(10);
     int speed = 2;
     boolean running, goNorth, goSouth, goEast, goWest;
     Group guns = new Group();
     Gun selectedWeapon;
+    boolean dead = false;
+    int score = 0;
     String name = "Character";
 
 

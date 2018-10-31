@@ -1,12 +1,13 @@
 package main.game.com.shooter;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 
 public class Player extends Character {
     double mouseposx;
     double mouseposy;
+    Label scorelabel = new Label("Score: "+score);
     Player(){
         characterModel.setImage(new Image("Player.png", 100,125,true,true));
 
@@ -52,6 +53,7 @@ public class Player extends Character {
             selectedWeapon.shoot(this.getCharacterCenterX(), this.getCharacterCenterY(), mouseposx, mouseposy);
             toFront();
         });
+        this.getChildren().add(scorelabel);
     }
 
     @Override
@@ -59,6 +61,12 @@ public class Player extends Character {
         move();
         moveBullets();
         moveHealth();
+        updateScore();
+
+    }
+
+    private void updateScore() {
+        scorelabel.setText("Score: "+score);
     }
 
     private void move(){

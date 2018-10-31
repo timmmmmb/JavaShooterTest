@@ -4,7 +4,6 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -13,7 +12,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Main extends Application {
@@ -48,26 +46,37 @@ public class Main extends Application {
         // define first scene and styles
         Scene scene = new Scene(vBox,1000,1000);
 
+        Pane level = new Pane();
+        Group characters = new Group();
+        Group defences = new Group();
+        Group powerups = new Group();
+
         Player player = new Player();
         player.characterModel.setX(400);
         player.characterModel.setY(400);
-        Pane level = new Pane();
-        Group characters = new Group();
         characters.getChildren().add(player);
 
         Enemy enemy1 = new Enemy();
         enemy1.characterModel.setX(100);
         enemy1.characterModel.setY(400);
         characters.getChildren().add(enemy1);
-        level.getChildren().add(characters);
+
+        level.getChildren().addAll(characters,defences,powerups);
         level.setStyle("-fx-background-color : #63ff69;");
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                Iterator iter= characters.getChildren().iterator();
-                while(iter.hasNext()) {
-                    Character character = (Character)iter.next();
+                for (Object o : characters.getChildren()) {
+                    Character character = (Character) o;
                     character.update();
+                }
+                // removes dead characters
+                Iterator iter= characters.getChildren().iterator();
+                while(iter.hasNext()){
+                    if(((Character)iter.next()).dead){
+                        iter.remove();
+                    }
                 }
             }
         };
