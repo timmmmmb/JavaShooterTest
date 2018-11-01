@@ -18,8 +18,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    //TODO add powerups that heal
-    //TODO add powerups that restore ammunition
+    //TODO add a shotgun
     private double runduration = 0;
 
     private Group characters = new Group();
