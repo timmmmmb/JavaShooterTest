@@ -22,6 +22,7 @@ public class Character extends Group {
         this.getChildren().add(health);
         name = "Character";
         toFront();
+        moveHealth();
     }
 
     public void update(){

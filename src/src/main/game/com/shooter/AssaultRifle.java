@@ -37,6 +37,7 @@ public class AssaultRifle extends Gun {
 
     private void shoot(double startposx, double startposy) {
         if(ammunition==0){
+            repeatshot = 0;
             return;
         }
         Bullet bullet = new Bullet(mouseposx, mouseposy,startposx,startposy,speed);

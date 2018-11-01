@@ -13,6 +13,7 @@ class Gun extends Group{
     int speed;
     int cooldownbetweenshots;
     int cooldown;
+    int maxrange = 1000;
 
     Gun(int ammunition, int damage, String name, int speed, int cooldownbetweenshots) {
         this.damage = damage;
@@ -51,6 +52,10 @@ class Gun extends Group{
         while(iter.hasNext()){
             Bullet bullet = (Bullet)iter.next();
             if(bullet!=null&&bullet.getImage()!=null&&bullet.getScene()!=null&&(bullet.getX()+bullet.getImage().getWidth()>bullet.getScene().getWidth()||bullet.getX()<0-bullet.getImage().getWidth()||bullet.getY()>bullet.getScene().getHeight()+bullet.getImage().getHeight()||bullet.getY()<0-bullet.getImage().getHeight())){
+                iter.remove();
+                continue;
+            }
+            if(bullet!=null&&bullet.getImage()!=null&&bullet.getScene()!=null&&(bullet.distance > maxrange)){
                 iter.remove();
                 continue;
             }

@@ -5,12 +5,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 class Bullet extends ImageView {
+    public int distance = 0;
     private double xspeed;
     private double yspeed;
+    private int speed;
 
     Bullet(double targetx, double targety, double startposx, double startposy, int speed) {
         double hypothenus = Math.sqrt((targetx-startposx)*(targetx-startposx) + (targety-startposy) * (targety-startposy));
         double steps = hypothenus/speed;
+        this.speed = speed;
         xspeed = (targetx-startposx)/steps;
         yspeed = (targety-startposy)/steps;
 
@@ -29,5 +32,6 @@ class Bullet extends ImageView {
     private void move() {
         setX(getX()+xspeed);
         setY(getY()+yspeed);
+        distance += speed;
     }
 }

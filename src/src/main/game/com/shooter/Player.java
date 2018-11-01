@@ -36,6 +36,12 @@ public class Player extends Character {
                         updateUI();
                     }
                     break;
+                case DIGIT3:
+                    if(guns.getChildren().size()>=3){
+                        selectedWeapon = (Gun)guns.getChildren().get(2);
+                        updateUI();
+                    }
+                    break;
                 case SHIFT: running = true; break;
             }
         });
@@ -70,6 +76,7 @@ public class Player extends Character {
 
         guns.getChildren().add(new Pistol(1000));
         guns.getChildren().add(new AssaultRifle(100));
+        guns.getChildren().add(new Shotgun(10));
         this.getChildren().add(guns);
         selectedWeapon = (Gun)guns.getChildren().get(0);
 
@@ -84,6 +91,7 @@ public class Player extends Character {
         this.name = "Player";
         this.getChildren().add(energy);
         updateUI();
+        moveEnergy();
     }
 
     @Override
