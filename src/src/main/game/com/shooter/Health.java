@@ -25,7 +25,7 @@ public class Health extends Group {
             return true;
         }
         this.currentlife = this.currentlife- amount;
-        healthBar.setViewport(new Rectangle2D(0,0,healthBarOverlay.getImage().getWidth()*currentlife/maxlife, healthBarOverlay.getImage().getHeight()));
+        updateHealthDisplay();
         return false;
     }
 
@@ -33,8 +33,13 @@ public class Health extends Group {
         if(this.currentlife+currentlife>=this.maxlife){
             this.currentlife = this.maxlife;
         }else{
-            this.currentlife = currentlife;
+            this.currentlife += currentlife;
         }
+        updateHealthDisplay();
+    }
+
+    void updateHealthDisplay(){
+        healthBar.setViewport(new Rectangle2D(0,0,healthBarOverlay.getImage().getWidth()*currentlife/maxlife, healthBarOverlay.getImage().getHeight()));
     }
 
     public int getMaxlife() {

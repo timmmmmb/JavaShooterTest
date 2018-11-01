@@ -6,7 +6,7 @@ public class AssaultRifle extends Gun {
     double mouseposy = 0;
     int counter = 0;
     AssaultRifle(int ammunition) {
-        super(ammunition, 4, "AssaultRifle", 8, 90);
+        super(ammunition, 2, "AssaultRifle", 8, 90);
     }
 
     @Override

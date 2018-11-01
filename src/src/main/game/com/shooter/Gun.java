@@ -79,4 +79,8 @@ class Gun extends Group{
     public String getName() {
         return name;
     }
+
+    public void addAmmunition(int amount){
+        ammunition += amount;
+    }
 }

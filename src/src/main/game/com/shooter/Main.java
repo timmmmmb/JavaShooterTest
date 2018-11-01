@@ -18,7 +18,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    //TODO spawn more enemys after 30s and after 60s
     //TODO add powerups that heal
     //TODO add powerups that restore ammunition
     private double runduration = 0;
@@ -71,15 +70,24 @@ public class Main extends Application {
                 //adds new enemys at random coordinates
                 //it triggers all 30 sec
                 if(runduration%(30*15)==0){
-
+                    //adds a powerup
+                    newPowerup();
                     characters.getChildren().add(new MeleeEnemy(player));
+                    if(runduration>30*30){
+                        characters.getChildren().add(new MeleeEnemy(player));
+                    }
                     if(runduration>30*60){
                         characters.getChildren().add(new MeleeEnemy(player));
                     }
-                    if(runduration>30*120){
-                        characters.getChildren().add(new MeleeEnemy(player));
-                    }
                 }
+
+                for (Object o : powerups.getChildren()) {
+                    PowerUps powerup = (PowerUps) o;
+                    powerup.update(player);
+                }
+
+                // removes dead characters
+                powerups.getChildren().removeIf(o -> ((PowerUps) o).used);
 
             }
         };
@@ -106,19 +114,30 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    private void newPowerup(){
+        Random rand = new Random();
+        if(rand.nextInt(2) + 1==1){
+            powerups.getChildren().add(new PowerUps(5));
+        }else if(rand.nextInt(2) + 1==2){
+            powerups.getChildren().add(new AmmunitionPowerUp(5));
+        }else{
+            powerups.getChildren().add(new HealPowerUp(5));
+        }
+    }
+
     private void initializeLevel1(){
         Pane level = new Pane();
-        player = new Player(400,400);
+        player = new Player(450,0);
 
         characters = new Group();
         defences = new Group();
         powerups = new Group();
         characters.getChildren().add(player);
-        characters.getChildren().add(new MeleeEnemy(100,400));
-
+        characters.getChildren().add(new MeleeEnemy(450,900));
         level.getChildren().addAll(characters,defences,powerups);
         level.setStyle("-fx-background-color : #63ff69;");
 
+        //newPowerup();
         runduration = 0;
         levelscene = new Scene(level,1000,1000);
         levelscene.onMouseMovedProperty().bind(player.onMouseMovedProperty());

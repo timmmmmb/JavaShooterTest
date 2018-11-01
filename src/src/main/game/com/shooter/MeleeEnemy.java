@@ -7,7 +7,7 @@ import java.util.Random;
 public class MeleeEnemy extends Enemy {
     private int attackcooldown = 100;
     private int currentattackcooldown = 0;
-    private int meleedamage = 5;
+    private int meleedamage = 3;
     MeleeEnemy(Character player){
         speed = 1;
         characterModel.setImage(new Image("MeleeEnemy.png", 100,100,true,true));

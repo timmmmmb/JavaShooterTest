@@ -103,7 +103,7 @@ public class Player extends Character {
         }
     }
 
-    private void updateUI(){
+    public void updateUI(){
         currentweapon.setText("  Currentweapon: "+selectedWeapon.getName()+" Ammunition: "+selectedWeapon.ammunition);
     }
 
