@@ -52,8 +52,9 @@ public class Player extends Character {
         });
 
         guns.getChildren().add(new Pistol(1000));
+        guns.getChildren().add(new AssaultRifle(1000));
         this.getChildren().add(guns);
-        selectedWeapon = (Gun)guns.getChildren().get(0);
+        selectedWeapon = (Gun)guns.getChildren().get(1);
 
         this.setOnMousePressed(event -> {
             shooting = true;

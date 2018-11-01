@@ -9,10 +9,10 @@ import java.util.Iterator;
 class Gun extends Group{
     private String name;
     private int damage;
-    private int ammunition;
-    private int speed;
-    private int cooldownbetweenshots;
-    private int cooldown;
+    int ammunition;
+    int speed;
+    int cooldownbetweenshots;
+    int cooldown;
 
     Gun(int ammunition, int damage, String name, int speed, int cooldownbetweenshots) {
         this.damage = damage;
@@ -33,9 +33,17 @@ class Gun extends Group{
     }
 
     void update(){
+        updateCooldown();
+        moveBullets();
+    }
+
+    public void updateCooldown(){
         if(cooldown>0){
             cooldown--;
         }
+    }
+
+    public void moveBullets(){
         Iterator iter= this.getChildren().iterator();
         Character gunuser = (Character)getParent().getParent();
         Pane level = (Pane)this.getScene().getRoot();
