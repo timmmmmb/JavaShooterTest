@@ -18,7 +18,16 @@ public class Player extends Character {
                 case DOWN: case S: goSouth = true; break;
                 case LEFT: case A: goWest  = true; break;
                 case RIGHT: case D: goEast  = true; break;
-                case DIGIT1: break;
+                case DIGIT1:
+                    if(guns.getChildren().size()>=1){
+                        selectedWeapon = (Gun)guns.getChildren().get(0);
+                    }
+                    break;
+                case DIGIT2:
+                    if(guns.getChildren().size()>=2){
+                        selectedWeapon = (Gun)guns.getChildren().get(1);
+                    }
+                    break;
                 case SHIFT: running = true; break;
             }
         });
