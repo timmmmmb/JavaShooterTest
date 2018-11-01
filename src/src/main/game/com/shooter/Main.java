@@ -27,10 +27,10 @@ public class Main extends Application {
     //TODO add powerups that restore ammunition
     private double runduration = 0;
 
-    Group characters = new Group();
-    Group defences = new Group();
-    Group powerups = new Group();
-    Player player = new Player(0,0);
+    private Group characters = new Group();
+    private Group defences = new Group();
+    private Group powerups = new Group();
+    private Player player = new Player(0,0);
 
     private Scene levelscene;
     @Override
@@ -73,11 +73,18 @@ public class Main extends Application {
                 characters.getChildren().removeIf(o -> ((Character) o).health.isDead());
 
                 //adds new enemys at random coordinates
-                //it triggers all 20 sec
-                if(runduration%(30*20)==0){
-                    Random rand = new Random();
-                    characters.getChildren().add(new MeleeEnemy(rand.nextInt(1000) + 1,rand.nextInt(1000) + 1));
+                //it triggers all 30 sec
+                if(runduration%(30*30)==0){
+
+                    characters.getChildren().add(new MeleeEnemy(player));
+                    if(runduration>30*60){
+                        characters.getChildren().add(new MeleeEnemy(player));
+                    }
+                    if(runduration>30*120){
+                        characters.getChildren().add(new MeleeEnemy(player));
+                    }
                 }
+
             }
         };
 
@@ -122,5 +129,7 @@ public class Main extends Application {
         levelscene.onKeyPressedProperty().bind(player.onKeyPressedProperty());
         levelscene.onKeyReleasedProperty().bind(player.onKeyReleasedProperty());
         levelscene.onMousePressedProperty().bind(player.onMousePressedProperty());
+        levelscene.onMouseReleasedProperty().bind(player.onMouseReleasedProperty());
+        levelscene.onMouseDraggedProperty().bind(player.onMouseDraggedProperty());
     }
 }

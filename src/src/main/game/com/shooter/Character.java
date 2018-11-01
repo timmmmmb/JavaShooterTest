@@ -10,7 +10,7 @@ public class Character extends Group {
     int scorevalue = 1;
     Health health = new Health(10);
     int speed = 2;
-    boolean running, goNorth, goSouth, goEast, goWest;
+    boolean running, goNorth, goSouth, goEast, goWest,shooting;
     Group guns = new Group();
     Gun selectedWeapon;
     int score = 0;

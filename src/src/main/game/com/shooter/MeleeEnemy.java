@@ -2,13 +2,24 @@ package main.game.com.shooter;
 
 import javafx.scene.image.Image;
 
+import java.util.Random;
+
 public class MeleeEnemy extends Enemy {
     private int attackcooldown = 100;
     private int currentattackcooldown = 0;
     private int meleedamage = 5;
-    MeleeEnemy(){
+    MeleeEnemy(Character player){
         speed = 1;
         characterModel.setImage(new Image("MeleeEnemy.png", 100,100,true,true));
+        Random rand = new Random();
+        int xpos = 0;
+        int ypos = 0;
+        do{
+            xpos = rand.nextInt(1000) + 1;
+            ypos = rand.nextInt(1000) + 1;
+        }while(player.characterModel.intersects(xpos-10,ypos-10,120,120));
+        characterModel.setY(ypos);
+        characterModel.setX(xpos);
     }
 
     public MeleeEnemy(int x, int y) {
@@ -16,6 +27,7 @@ public class MeleeEnemy extends Enemy {
         characterModel.setImage(new Image("MeleeEnemy.png", 100,100,true,true));
         characterModel.setX(x);
         characterModel.setY(y);
+
     }
 
     @Override

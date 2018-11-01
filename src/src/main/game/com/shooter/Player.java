@@ -42,11 +42,26 @@ public class Player extends Character {
             rotateTowardsMouse();
         });
 
+        this.setOnMouseDragged(event -> {
+            if(characterModel.getX()<=event.getX() && event.getX()<=characterModel.getX()+characterModel.getImage().getWidth()&&characterModel.getY()<=event.getY() && event.getY()<=characterModel.getY()+characterModel.getImage().getHeight()){
+                return;
+            }
+            mouseposx = event.getX();
+            mouseposy = event.getY();
+            rotateTowardsMouse();
+        });
+
         guns.getChildren().add(new Pistol(1000));
         this.getChildren().add(guns);
         selectedWeapon = (Gun)guns.getChildren().get(0);
 
-        this.setOnMousePressed(event -> selectedWeapon.shoot(this.getCharacterCenterX(), this.getCharacterCenterY(), mouseposx, mouseposy));
+        this.setOnMousePressed(event -> {
+            shooting = true;
+        });
+
+        this.setOnMouseReleased(event -> {
+            shooting = false;
+        });
         this.getChildren().add(scorelabel);
         this.name = "Player";
     }
@@ -57,7 +72,13 @@ public class Player extends Character {
         moveBullets();
         moveHealth();
         updateScore();
+        shoot();
+    }
 
+    private void shoot(){
+        if(shooting){
+            selectedWeapon.shoot(this.getCharacterCenterX(), this.getCharacterCenterY(), mouseposx, mouseposy);
+        }
     }
 
     private void rotateTowardsMouse(){
