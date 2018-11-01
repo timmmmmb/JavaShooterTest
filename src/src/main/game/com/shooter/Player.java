@@ -2,13 +2,19 @@ package main.game.com.shooter;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 
 public class Player extends Character {
     private double mouseposx;
     private double mouseposy;
+    private Energy energy = new Energy(300);
+    private HBox ui = new HBox();
     private Label scorelabel = new Label("Score: "+score);
+    private Label currentweapon = new Label("Currentweapon: "+selectedWeapon.getName()+" Ammunition: "+selectedWeapon.ammunition);
     Player(int x, int y){
+        ui.getChildren().addAll(scorelabel,currentweapon);
         characterModel.setImage(new Image("Player.png", 100,125,true,true));
         characterModel.setX(x);
         characterModel.setY(y);
@@ -21,11 +27,13 @@ public class Player extends Character {
                 case DIGIT1:
                     if(guns.getChildren().size()>=1){
                         selectedWeapon = (Gun)guns.getChildren().get(0);
+                        updateUI();
                     }
                     break;
                 case DIGIT2:
                     if(guns.getChildren().size()>=2){
                         selectedWeapon = (Gun)guns.getChildren().get(1);
+                        updateUI();
                     }
                     break;
                 case SHIFT: running = true; break;
@@ -61,9 +69,9 @@ public class Player extends Character {
         });
 
         guns.getChildren().add(new Pistol(1000));
-        guns.getChildren().add(new AssaultRifle(1000));
+        guns.getChildren().add(new AssaultRifle(100));
         this.getChildren().add(guns);
-        selectedWeapon = (Gun)guns.getChildren().get(1);
+        selectedWeapon = (Gun)guns.getChildren().get(0);
 
         this.setOnMousePressed(event -> {
             shooting = true;
@@ -72,8 +80,10 @@ public class Player extends Character {
         this.setOnMouseReleased(event -> {
             shooting = false;
         });
-        this.getChildren().add(scorelabel);
+        this.getChildren().add(ui);
         this.name = "Player";
+        this.getChildren().add(energy);
+        updateUI();
     }
 
     @Override
@@ -81,6 +91,7 @@ public class Player extends Character {
         move();
         moveBullets();
         moveHealth();
+        moveEnergy();
         updateScore();
         shoot();
     }
@@ -88,7 +99,12 @@ public class Player extends Character {
     private void shoot(){
         if(shooting){
             selectedWeapon.shoot(this.getCharacterCenterX(), this.getCharacterCenterY(), mouseposx, mouseposy);
+            updateUI();
         }
+    }
+
+    private void updateUI(){
+        currentweapon.setText("  Currentweapon: "+selectedWeapon.getName()+" Ammunition: "+selectedWeapon.ammunition);
     }
 
     private void rotateTowardsMouse(){
@@ -103,6 +119,21 @@ public class Player extends Character {
         scorelabel.setText("Score: "+score);
     }
 
+    void moveEnergy(){
+        ((ImageView)energy.getChildren().get(0)).setX(characterModel.getX());
+        ((ImageView)energy.getChildren().get(1)).setX(characterModel.getX());
+        ((ImageView)energy.getChildren().get(0)).setY(characterModel.getY()-((ImageView)health.getChildren().get(0)).getImage().getHeight());
+        ((ImageView)energy.getChildren().get(1)).setY(characterModel.getY()-((ImageView)health.getChildren().get(1)).getImage().getHeight());
+    }
+
+    @Override
+    void moveHealth(){
+        ((ImageView)health.getChildren().get(0)).setX(characterModel.getX());
+        ((ImageView)health.getChildren().get(1)).setX(characterModel.getX());
+        ((ImageView)health.getChildren().get(0)).setY(characterModel.getY()-((ImageView)health.getChildren().get(0)).getImage().getHeight()*2);
+        ((ImageView)health.getChildren().get(1)).setY(characterModel.getY()-((ImageView)health.getChildren().get(1)).getImage().getHeight()*2);
+    }
+
     private void move(){
         int dx = 0, dy = 0;
 
@@ -110,7 +141,10 @@ public class Player extends Character {
         if (goSouth) dy += speed;
         if (goEast)  dx += speed;
         if (goWest)  dx -= speed;
-        if (running) { dx *= 3; dy *= 3; }
+        if (running&&!energy.isExhausted()) { dx *= 3; dy *= 3;energy.useEnergy(2); }
+        else{
+            energy.setCurrentenergy(1);
+        }
         if(getScene().getWidth()>=characterModel.getX()+dx+characterModel.getImage().getWidth()&&0<=characterModel.getX()+dx){
             characterModel.setX(characterModel.getX()+dx);
         }

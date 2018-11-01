@@ -12,7 +12,7 @@ public class Character extends Group {
     int speed = 2;
     boolean running, goNorth, goSouth, goEast, goWest,shooting;
     Group guns = new Group();
-    Gun selectedWeapon;
+    Gun selectedWeapon = new Pistol(10);
     int score = 0;
     String name;
 
@@ -35,6 +35,8 @@ public class Character extends Group {
         ((ImageView)health.getChildren().get(0)).setY(characterModel.getY()-((ImageView)health.getChildren().get(0)).getImage().getHeight());
         ((ImageView)health.getChildren().get(1)).setY(characterModel.getY()-((ImageView)health.getChildren().get(1)).getImage().getHeight());
     }
+
+
 
     void moveBullets(){
         for(Node gun: guns.getChildren()){

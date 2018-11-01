@@ -18,10 +18,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    //TODO change spawn position so they can no longer spawn near you
-    //TODO display the current weapon and its amuntion
-    //TODO add a rifle that shoots 3 shots at once all with a 0.5 sec delay
-    //TODO stop the player from running indefinetly
     //TODO spawn more enemys after 30s and after 60s
     //TODO add powerups that heal
     //TODO add powerups that restore ammunition
@@ -74,7 +70,7 @@ public class Main extends Application {
 
                 //adds new enemys at random coordinates
                 //it triggers all 30 sec
-                if(runduration%(30*30)==0){
+                if(runduration%(30*15)==0){
 
                     characters.getChildren().add(new MeleeEnemy(player));
                     if(runduration>30*60){
