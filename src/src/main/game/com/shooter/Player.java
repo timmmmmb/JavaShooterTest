@@ -2,6 +2,7 @@ package main.game.com.shooter;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 
 
 public class Player extends Character {
@@ -79,9 +80,12 @@ public class Player extends Character {
         if (goEast)  dx += speed;
         if (goWest)  dx -= speed;
         if (running) { dx *= 3; dy *= 3; }
-
-        characterModel.setX(characterModel.getX()+dx);
-        characterModel.setY(characterModel.getY()+dy);
+        if(getScene().getWidth()>=characterModel.getX()+dx+characterModel.getImage().getWidth()&&0<=characterModel.getX()+dx){
+            characterModel.setX(characterModel.getX()+dx);
+        }
+        if(getScene().getHeight()>=characterModel.getY()+dy+characterModel.getImage().getHeight()&&0<=characterModel.getY()+dy){
+            characterModel.setY(characterModel.getY()+dy);
+        }
         if(dx!=0||dy!=0){
             rotateTowardsMouse();
         }

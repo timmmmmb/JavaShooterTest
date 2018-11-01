@@ -19,7 +19,6 @@ public class Main extends Application {
         launch(args);
     }
     //TODO change spawn position so they can no longer spawn near you
-    //TODO make it impossible to move out of screen
     //TODO display the current weapon and its amuntion
     //TODO add a rifle that shoots 3 shots at once all with a 0.5 sec delay
     //TODO make it possible to restart the game
