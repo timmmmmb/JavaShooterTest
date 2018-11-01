@@ -2,7 +2,6 @@ package main.game.com.shooter;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
 
 
 public class Player extends Character {
@@ -19,6 +18,7 @@ public class Player extends Character {
                 case DOWN: case S: goSouth = true; break;
                 case LEFT: case A: goWest  = true; break;
                 case RIGHT: case D: goEast  = true; break;
+                case DIGIT1: break;
                 case SHIFT: running = true; break;
             }
         });

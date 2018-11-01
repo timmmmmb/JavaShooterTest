@@ -21,7 +21,6 @@ public class Main extends Application {
     //TODO change spawn position so they can no longer spawn near you
     //TODO display the current weapon and its amuntion
     //TODO add a rifle that shoots 3 shots at once all with a 0.5 sec delay
-    //TODO make it possible to restart the game
     //TODO stop the player from running indefinetly
     //TODO spawn more enemys after 30s and after 60s
     //TODO add powerups that heal
@@ -74,7 +73,7 @@ public class Main extends Application {
                 characters.getChildren().removeIf(o -> ((Character) o).health.isDead());
 
                 //adds new enemys at random coordinates
-                //it triggers all 15 sec
+                //it triggers all 20 sec
                 if(runduration%(30*20)==0){
                     Random rand = new Random();
                     characters.getChildren().add(new MeleeEnemy(rand.nextInt(1000) + 1,rand.nextInt(1000) + 1));
@@ -86,6 +85,11 @@ public class Main extends Application {
 
         startButton.setOnAction(e -> {
                 initializeLevel1();
+                levelscene.setOnKeyTyped(event -> {
+                    switch (event.getCharacter()) {
+                        case "\u001B": timer.stop();primaryStage.setScene(scene); break;
+                    }
+                });
                 timer.start();
                 primaryStage.setScene(levelscene);
             }
@@ -108,7 +112,6 @@ public class Main extends Application {
         powerups = new Group();
         characters.getChildren().add(player);
         characters.getChildren().add(new MeleeEnemy(100,400));
-
 
         level.getChildren().addAll(characters,defences,powerups);
         level.setStyle("-fx-background-color : #63ff69;");
