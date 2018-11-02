@@ -51,6 +51,7 @@ class Gun extends Group{
         Character gunuser = (Character)getParent().getParent();
         Pane level = (Pane)this.getScene().getRoot();
         Group characters = (Group)level.getChildren().get(0);
+        Group obstacles = (Group)level.getChildren().get(1);
         while(iter.hasNext()){
             Bullet bullet = (Bullet)iter.next();
             if(bullet!=null&&bullet.getImage()!=null&&bullet.getScene()!=null&&(bullet.getX()+bullet.getImage().getWidth()>bullet.getScene().getWidth()||bullet.getX()<0-bullet.getImage().getWidth()||bullet.getY()>bullet.getScene().getHeight()+bullet.getImage().getHeight()||bullet.getY()<0-bullet.getImage().getHeight())){
@@ -61,7 +62,7 @@ class Gun extends Group{
                 iter.remove();
                 continue;
             }
-            //test if bullet collides with something
+            //test if bullet collides with a character
             for(Node characternode:characters.getChildren()){
                 Character character = (Character)characternode;
                 if(character!=gunuser){
@@ -74,6 +75,15 @@ class Gun extends Group{
                         iter.remove();
                         break;
                     }
+                }
+            }
+
+            //test if bullet collides with a obstacle
+            for(Node obstaclenode:obstacles.getChildren()){
+                Obstacle obstacle = (Obstacle)obstaclenode;
+                if (bullet != null && obstacle.intersects(bullet.getX(), bullet.getY(), bullet.getImage().getWidth(), bullet.getImage().getHeight())) {
+                    iter.remove();
+                    break;
                 }
             }
 

@@ -22,7 +22,6 @@ public class Main extends Application {
         launch(args);
     }
     //TODO make it that the ammunition powerup gives different amounts of ammo per weapon
-    //TODO make it so the pistol has infinite ammunition
     //TODO add obstacles that you cant move through
     //TODO make a boss meleeenemy that has a lot of health
     //TODO make multiple level layouts that you can choose
@@ -153,6 +152,8 @@ public class Main extends Application {
         characters.getChildren().add(new MeleeEnemy(450,900));
         level.getChildren().addAll(characters,defences,powerups);
         level.setStyle("-fx-background-color : #63ff69;");
+        defences.getChildren().add(new Obstacle(400,495,200,10,0));
+
 
         //newPowerup();
         runduration = 0;

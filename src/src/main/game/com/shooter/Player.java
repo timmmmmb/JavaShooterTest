@@ -1,9 +1,12 @@
 package main.game.com.shooter;
 
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 
 public class Player extends Character {
@@ -152,6 +155,9 @@ public class Player extends Character {
     private void move(){
         int dx = 0, dy = 0;
 
+        Pane level = (Pane)this.getScene().getRoot();
+        Group obstacles = (Group)level.getChildren().get(1);
+
         if (goNorth) dy -= speed;
         if (goSouth) dy += speed;
         if (goEast)  dx += speed;
@@ -160,10 +166,20 @@ public class Player extends Character {
         else{
             energy.setCurrentenergy(1);
         }
-        if(getScene().getWidth()>=characterModel.getX()+dx+characterModel.getImage().getWidth()&&0<=characterModel.getX()+dx){
+        boolean xmovement = true, ymovement = true;
+        for(Node obstaclenode:obstacles.getChildren()) {
+            Obstacle obstacle = (Obstacle) obstaclenode;
+            if(obstacle.intersects(characterModel.getX()+dx,characterModel.getY(),characterModel.getImage().getWidth(),characterModel.getImage().getHeight())){
+                xmovement = false;
+            }
+            if(obstacle.intersects(characterModel.getX(),characterModel.getY()+dy,characterModel.getImage().getWidth(),characterModel.getImage().getHeight())){
+                ymovement = false;
+            }
+        }
+        if(getScene().getWidth()>=characterModel.getX()+dx+characterModel.getImage().getWidth()&&0<=characterModel.getX()+dx&&xmovement){
             characterModel.setX(characterModel.getX()+dx);
         }
-        if(getScene().getHeight()>=characterModel.getY()+dy+characterModel.getImage().getHeight()&&0<=characterModel.getY()+dy){
+        if(getScene().getHeight()>=characterModel.getY()+dy+characterModel.getImage().getHeight()&&0<=characterModel.getY()+dy&&ymovement){
             characterModel.setY(characterModel.getY()+dy);
         }
         if(dx!=0||dy!=0){
