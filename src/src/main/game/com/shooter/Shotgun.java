@@ -3,7 +3,7 @@ package main.game.com.shooter;
 public class Shotgun extends Gun {
 
     Shotgun(int ammuntion) {
-        super(ammuntion, 2, "Shotgun", 4, 150);
+        super(ammuntion, 2, "Shotgun", 4, 150, GunType.SHOTGUN);
         maxrange = 400;
     }
     @Override

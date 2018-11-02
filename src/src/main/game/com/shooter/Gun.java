@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 class Gun extends Group{
     private String name;
+    private GunType type = GunType.GUN;
     private int damage;
     int ammunition;
     int speed;
@@ -15,12 +16,13 @@ class Gun extends Group{
     int cooldown;
     int maxrange = 1000;
 
-    Gun(int ammunition, int damage, String name, int speed, int cooldownbetweenshots) {
+    Gun(int ammunition, int damage, String name, int speed, int cooldownbetweenshots, GunType type) {
         this.damage = damage;
         this.name = name;
         this.ammunition = ammunition;
         this.speed = speed;
         this.cooldownbetweenshots = cooldownbetweenshots;
+        this.type = type;
     }
 
     void shoot(double startposx, double startposy, double mouseposx, double mouseposy){
