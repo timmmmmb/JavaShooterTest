@@ -6,10 +6,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.util.Random;
@@ -18,13 +21,23 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    //TODO add a machinegun that shoots fast
+    //TODO make a weopontype enum
+    //TODO make it that the ammunition powerup gives different amounts of ammo per weapon
+    //TODO make it so the pistol has infinite ammunition
     //TODO add obstacles that you cant move through
+    //TODO make a boss meleeenemy that has a lot of health
+    //TODO make multiple level layouts that you can choose
+    //TODO make different bulletdesignes and shoot different bullets per gun
+    //TODO create a simple ai for enemys that can shoot
     private double runduration = 0;
 
     private Group characters = new Group();
+    private Group deathscreen = new Group();
     private Group defences = new Group();
     private Group powerups = new Group();
     private Player player = new Player(0,0);
+    private Pane level = new Pane();
 
     private Scene levelscene;
     @Override
@@ -54,7 +67,7 @@ public class Main extends Application {
         // define first scene and styles
         Scene scene = new Scene(vBox,1000,1000);
 
-        Pane level = new Pane();
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -85,6 +98,18 @@ public class Main extends Application {
                     powerup.update(player);
                 }
 
+                if(player.health.isDead()){
+                    deathscreen = new Group();
+                    Label label = new Label("You died \nyour score: "+player.score+"\npress Escape to return to menu or R to restart the level");
+                    label.setTextAlignment(TextAlignment.CENTER);
+                    label.setFont(Font.font("Cambria", 32));
+                    label.setLayoutX(100);
+                    label.setLayoutY(400);
+                    deathscreen.getChildren().add(label);
+                    level.getChildren().add(deathscreen);
+                    this.stop();
+                }
+
                 // removes dead characters
                 powerups.getChildren().removeIf(o -> ((PowerUps) o).used);
 
@@ -94,12 +119,7 @@ public class Main extends Application {
         levelscene = new Scene(level,1000,1000);
 
         startButton.setOnAction(e -> {
-                initializeLevel1();
-                levelscene.setOnKeyTyped(event -> {
-                    switch (event.getCharacter()) {
-                        case "\u001B": timer.stop();primaryStage.setScene(scene); break;
-                    }
-                });
+                initializeLevel1(timer,primaryStage,scene);
                 timer.start();
                 primaryStage.setScene(levelscene);
             }
@@ -124,8 +144,8 @@ public class Main extends Application {
         }
     }
 
-    private void initializeLevel1(){
-        Pane level = new Pane();
+    private void initializeLevel1(AnimationTimer timer, Stage primaryStage, Scene scene){
+        level = new Pane();
         player = new Player(450,0);
 
         characters = new Group();
@@ -139,6 +159,20 @@ public class Main extends Application {
         //newPowerup();
         runduration = 0;
         levelscene = new Scene(level,1000,1000);
+        levelscene.setOnKeyTyped(event -> {
+            switch (event.getCharacter()) {
+                case "\u001B":
+                    timer.stop();
+                    primaryStage.setScene(scene);
+                    break;
+                case "R": case "r":
+                    timer.stop();
+                    initializeLevel1(timer,primaryStage,scene);
+                    primaryStage.setScene(levelscene);
+                    timer.start();
+                    break;
+            }
+        });
         levelscene.onMouseMovedProperty().bind(player.onMouseMovedProperty());
         levelscene.onKeyPressedProperty().bind(player.onKeyPressedProperty());
         levelscene.onKeyReleasedProperty().bind(player.onKeyReleasedProperty());
