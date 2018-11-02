@@ -12,7 +12,7 @@ public class Player extends Character {
     private Energy energy = new Energy(300);
     private HBox ui = new HBox();
     private Label scorelabel = new Label("Score: "+score);
-    private Label currentweapon = new Label("Currentweapon: "+selectedWeapon.getName()+" Ammunition: "+selectedWeapon.ammunition);
+    private Label currentweapon = new Label("Currentweapon: "+selectedWeapon.getName()+" Ammunition: "+(selectedWeapon.type == GunType.PISTOL?"Infinite":selectedWeapon.ammunition));
     Player(int x, int y){
         ui.getChildren().addAll(scorelabel,currentweapon);
         characterModel.setImage(new Image("Player.png", 100,125,true,true));
@@ -119,7 +119,7 @@ public class Player extends Character {
     }
 
     public void updateUI(){
-        currentweapon.setText("  Currentweapon: "+selectedWeapon.getName()+" Ammunition: "+selectedWeapon.ammunition);
+        currentweapon.setText("  Currentweapon: "+selectedWeapon.getName()+" Ammunition: "+(selectedWeapon.type == GunType.PISTOL?"Infinite":selectedWeapon.ammunition));
     }
 
     private void rotateTowardsMouse(){

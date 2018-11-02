@@ -21,8 +21,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    //TODO add a machinegun that shoots fast
-    //TODO make a weopontype enum
     //TODO make it that the ammunition powerup gives different amounts of ammo per weapon
     //TODO make it so the pistol has infinite ammunition
     //TODO add obstacles that you cant move through

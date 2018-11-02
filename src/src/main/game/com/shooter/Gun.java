@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 class Gun extends Group{
     private String name;
-    private GunType type = GunType.GUN;
+    GunType type = GunType.GUN;
     private int damage;
     int ammunition;
     int speed;
