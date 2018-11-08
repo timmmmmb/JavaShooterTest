@@ -78,6 +78,7 @@ public class Main extends Application {
 
                 //adds new enemys at random coordinates
                 //it triggers all 30 sec
+
                 if(runduration%(30*15)==0){
                     //adds a powerup
                     newPowerup();
@@ -152,7 +153,9 @@ public class Main extends Application {
         characters.getChildren().add(new MeleeEnemy(450,900));
         level.getChildren().addAll(characters,defences,powerups);
         level.setStyle("-fx-background-color : #63ff69;");
-        defences.getChildren().add(new Obstacle(400,495,200,10,0));
+        defences.getChildren().add(new Obstacle(450,450,100,100,0));
+        /*defences.getChildren().add(new Obstacle(400,475,200,10,0));
+        defences.getChildren().add(new Obstacle(400,455,200,10,0));*/
 
 
         //newPowerup();
