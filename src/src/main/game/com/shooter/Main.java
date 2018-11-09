@@ -21,8 +21,8 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    //TODO implement multiplayer
     //TODO make it that the ammunition powerup gives different amounts of ammo per weapon
-    //TODO add obstacles that you cant move through
     //TODO make a boss meleeenemy that has a lot of health
     //TODO make multiple level layouts that you can choose
     //TODO make different bulletdesignes and shoot different bullets per gun
@@ -36,14 +36,12 @@ public class Main extends Application {
     private Player player = new Player(0,0);
     private Pane level = new Pane();
 
-    private Scene levelscene;
+    private Scene levelScene;
     @Override
     public void start(Stage primaryStage) {
-        // define primary stage properties
-        primaryStage.setTitle("Game");
-
         // define elements for intro screen
-        Button startButton = new Button("Start");
+        Button survivaltButton = new Button("Survival");
+        Button multiplayerButton = new Button("Multiplayer");
         Button settingsButton = new Button("Settings");
         Button exitButton = new Button("Exit");
         Text introText = new Text("Start the game");
@@ -51,7 +49,7 @@ public class Main extends Application {
 
         //define hbox for buttons
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(startButton,settingsButton,exitButton);
+        hbox.getChildren().addAll(survivaltButton,settingsButton,exitButton,multiplayerButton);
         hbox.setAlignment(Pos.CENTER);
         hbox.setSpacing(20);
 
@@ -114,13 +112,17 @@ public class Main extends Application {
             }
         };
 
-        levelscene = new Scene(level,1000,1000);
+        levelScene = new Scene(level,1000,1000);
 
-        startButton.setOnAction(e -> {
+        survivaltButton.setOnAction(e -> {
                 initializeLevel1(timer,primaryStage,scene);
                 timer.start();
-                primaryStage.setScene(levelscene);
+                primaryStage.setScene(levelScene);
             }
+        );
+
+        multiplayerButton.setOnAction(e -> {
+                    }
         );
         exitButton.setOnAction(e -> System.exit(0));
 
@@ -129,6 +131,24 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.maximizedProperty();
         primaryStage.show();
+    }
+
+    private void initializeMultiplayer(AnimationTimer timer, Stage primaryStage, Scene scene) {
+        level = new Pane();
+        player = new Player(450,0);
+
+        characters = new Group();
+        defences = new Group();
+        powerups = new Group();
+        characters.getChildren().add(player);
+
+        //get all multiplayer enemys
+
+        level.getChildren().addAll(characters,defences,powerups);
+        level.setStyle("-fx-background-color : #63ff69;");
+
+        //get leveldesign
+        defences.getChildren().add(new Obstacle(450,450,100,100,0));
     }
 
     private void newPowerup(){
@@ -160,8 +180,8 @@ public class Main extends Application {
 
         //newPowerup();
         runduration = 0;
-        levelscene = new Scene(level,1000,1000);
-        levelscene.setOnKeyTyped(event -> {
+        levelScene = new Scene(level,1000,1000);
+        levelScene.setOnKeyTyped(event -> {
             switch (event.getCharacter()) {
                 case "\u001B":
                     timer.stop();
@@ -170,16 +190,16 @@ public class Main extends Application {
                 case "R": case "r":
                     timer.stop();
                     initializeLevel1(timer,primaryStage,scene);
-                    primaryStage.setScene(levelscene);
+                    primaryStage.setScene(levelScene);
                     timer.start();
                     break;
             }
         });
-        levelscene.onMouseMovedProperty().bind(player.onMouseMovedProperty());
-        levelscene.onKeyPressedProperty().bind(player.onKeyPressedProperty());
-        levelscene.onKeyReleasedProperty().bind(player.onKeyReleasedProperty());
-        levelscene.onMousePressedProperty().bind(player.onMousePressedProperty());
-        levelscene.onMouseReleasedProperty().bind(player.onMouseReleasedProperty());
-        levelscene.onMouseDraggedProperty().bind(player.onMouseDraggedProperty());
+        levelScene.onMouseMovedProperty().bind(player.onMouseMovedProperty());
+        levelScene.onKeyPressedProperty().bind(player.onKeyPressedProperty());
+        levelScene.onKeyReleasedProperty().bind(player.onKeyReleasedProperty());
+        levelScene.onMousePressedProperty().bind(player.onMousePressedProperty());
+        levelScene.onMouseReleasedProperty().bind(player.onMouseReleasedProperty());
+        levelScene.onMouseDraggedProperty().bind(player.onMouseDraggedProperty());
     }
 }
